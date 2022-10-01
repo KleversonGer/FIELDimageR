@@ -1,28 +1,34 @@
-#' fieldCropWithRealArea 
+#' fieldCountWithRealArea
 #' 
-#' @title Selecting experimental field from original image
+#' @title Calculating number of objects per plot
 #' 
-#' @description It calculates the percentage of object area in the entire mosaic or per plot using the fieldShape file.
+#' @description The mask from function \code{\link{fieldMask}} is used to identify the number of objects per plot..
 #' 
 #' @param mosaic object mask of class stack from the function \code{\link{fieldMask}}.
-#' @param fieldShape crop the image using the fieldShape as reference. If fieldShape=NULL, four points should be selected 
-#'  directly on the original image to determine the experimental field.
-#' @param nPoint number of points necessary to select field boundaries or area to remove (4 >= nPoint <= 50).
-#' @param remove if TRUE the selected area will be removed from the image.
-#' @param plot if \code{TRUE} (by default) plots the original and cropped image.
-#' @param type character indicating the type of plotting, please check help("lines").
-#' @param lty line types, please check help("lines").
-#' @param lwd line width, please check help("lines").
-#' @param fast.plot  if TRUE only the grey scale image will be plotted as reference (faster approach).
-#'  if TRUE only the grey scale image will be plotted as reference (faster approach).
+#' @param fieldShape plot shape file.
+#' @param value referent value to vegetation pixels in the mask. If "HUE" was used on 
+#'   \code{\link{fieldMask}} the value=0.
+#' @param minSize used to set the minimum size percentage of plant canopy  (to remove weeds and more).
+#' @param n.core number of cores to use for multicore processing (Parallel). 
+#' @param pch point symbol, please check \code{help("points")}.
+#' @param cex character (or symbol) expansion: a numerical vector, please check \code{help("points")}.
+#' @param col color code or name, please check \code{help("points")}.
+#' @param na.rm logical. Should missing values (including NaN) be removed?.
 #' 
-#' @importFrom raster plotRGB mask
-#' @importFrom graphics locator lines 
-#' @importFrom sp Polygons Polygon SpatialPolygonsDataFrame SpatialPolygons
+#' @importFrom raster projection extract xyFromCell
+#' @importFrom EBImage distmap watershed
 #'
 #' 
-#' @return A image format stack.
+#' @return A list with five element
+#' \itemize{
+#'   \item \code{fieldCount} is the number of objects per plot represented in DataFrame.
+#'   \item \code{fieldShape} is the new shapeFile with stand count.
+#'   \item \code{mosaic} is the Watershed layer.
+#'   \item \code{objectSel} is the objects area per plot.
+#'   \item \code{objectReject} is the objects position in the image.
+#' }
 #' 
+#'
 #' @export
 
 fieldCountWithRealArea <- function(mosaic, fieldShape, value = 0, minSize = 0.01, n.core = NULL, pch = 16, 
