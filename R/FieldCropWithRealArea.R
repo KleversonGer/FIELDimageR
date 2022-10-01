@@ -1,3 +1,30 @@
+#' fieldCropWithRealArea 
+#' 
+#' @title Selecting experimental field from original image
+#' 
+#' @description It calculates the percentage of object area in the entire mosaic or per plot using the fieldShape file.
+#' 
+#' @param mosaic object mask of class stack from the function \code{\link{fieldMask}}.
+#' @param fieldShape crop the image using the fieldShape as reference. If fieldShape=NULL, four points should be selected 
+#'  directly on the original image to determine the experimental field.
+#' @param nPoint number of points necessary to select field boundaries or area to remove (4 >= nPoint <= 50).
+#' @param remove if TRUE the selected area will be removed from the image.
+#' @param plot if \code{TRUE} (by default) plots the original and cropped image.
+#' @param type character indicating the type of plotting, please check help("lines").
+#' @param lty line types, please check help("lines").
+#' @param lwd line width, please check help("lines").
+#' @param fast.plot  if TRUE only the grey scale image will be plotted as reference (faster approach).
+#'  if TRUE only the grey scale image will be plotted as reference (faster approach).
+#' 
+#' @importFrom raster plotRGB mask
+#' @importFrom graphics locator lines 
+#' @importFrom sp Polygons Polygon SpatialPolygonsDataFrame SpatialPolygons
+#'
+#' 
+#' @return A image format stack.
+#' 
+#' @export
+
 fieldCountWithRealArea <- function(mosaic, fieldShape, value = 0, minSize = 0.01, n.core = NULL, pch = 16, 
                        cex = 0.7, col = "red", na.rm = FALSE) {
   if(!is.na(projection(fieldShape))&is.na(projection(mosaic))){
