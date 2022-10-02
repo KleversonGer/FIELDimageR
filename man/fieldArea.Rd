@@ -8,6 +8,7 @@ fieldArea(
   mosaic,
   areaValue = 0,
   fieldShape = NULL,
+  buffer = NULL,
   n.core = NULL,
   plot = TRUE,
   na.rm = FALSE
@@ -20,6 +21,9 @@ fieldArea(
 
 \item{fieldShape}{evaluate the object area percentage per plot using the fieldShape as reference. If fieldShape=NULL, 
 the object area percentage will be calculated directly for the entire original image.}
+
+\item{buffer}{negative values should be used to remove boundaries from neighbor plot 
+(normally the unit is meters, please use values as 0.1 = 10 cm).}
 
 \item{n.core}{number of cores to use for multicore processing (Parallel).}
 

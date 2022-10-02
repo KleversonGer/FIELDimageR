@@ -3,6 +3,7 @@
 export(fieldAUC)
 export(fieldArea)
 export(fieldCount)
+export(fieldCountWithRealArea)
 export(fieldCrop)
 export(fieldDraw)
 export(fieldIndex)
